@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)https://www.cgchan.com/cantree -->
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+	<link rel="stylesheet" type="text/css" href="./assets/slick.css">
+
+	<link href="./assets/css" rel="stylesheet">
+	<link rel="stylesheet" href="./assets/app.css">
+
+	<link rel="styleSheet" href="./assets/jquery-ui-1.8.6.custom.css" type="text/css" media="screen">
+	<link rel="styleSheet" href="./assets/main.css" type="text/css" media="screen">
+
+	<title>CanTree - Free online 2d tree generator</title>
+	<meta name="description" content="">
+</head>
+
+<body>
+	<div id="page_body">
+		<section style="background-color: white; color: #333;">
+			<div id="pageContainerFullWidth" style="display:block; position: relative; min-height: 1200px;">
+				<div id="parametersContainer">
+					<button id="button_render" 
+						class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"
+						aria-disabled="false"><span class="ui-button-text">Draw tree</span></button>
+					<button id="button_forest" 
+						class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"
+						aria-disabled="false"><span class="ui-button-text">Draw forest</span></button></br>
+					<span id="renderTime">Tree drawn in 0.042 seconds</span><br> <a download="" id="button_save"
+						href="https://www.cgchan.com/cantree" target="_blank_"
+						title="Save the tree as a PNG in your downloads folder"
+						class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+						role="button"><span class="ui-button-text">Save tree image</span></a>
+				</div>
+				<div style=" text-align: center; background-color:transparent; z-index:0; width:100%;">
+					<canvas width="2000" height="1200" id="the_canvas2d"
+						style="margin:auto; display:block; background-color: hsla(0, 0%, 0%, .1);  "></canvas>
+				</div>
+			</div>
+
+			<noscript>
+				<h1>Enable Javascript to see this page correctly</h1>
+			</noscript>
+
+
+			<script type="text/javascript" src="./assets/jquery-1.4.4.min.js"></script>
+			<script type="text/javascript" src="./assets/jquery-ui-1.8.6.custom.min.js"></script>
+			<script type="text/javascript" src="./dist/tree2d.js"></script>
+			<script type="text/javascript">
+				$(function () {
+					function loadImage(url) {
+						return new Promise((resolve, reject) => {
+							let image = new Image()
+
+							image.onload = () => resolve(image)
+							const msg = `Could not load image at ${url}`
+							image.onerror = () => reject(new Error(msg))
+							image.src = url
+						})
+					}
+
+					var leafImgFiles = [
+						"./assets/leaf1.png",
+						"./assets/leaf2.png",
+						"./assets/leaf3.png",
+						"./assets/leaf4.png",
+						"./assets/leavesTextureNo1051_thumbnail.png",
+						"./assets/leavesTextureNo1052_thumbnail.png",
+						"./assets/leavesTextureNo1055_thumbnail.png",
+						"./assets/leavesTextureNo1065_thumbnail.png",
+						"./assets/leavesTextureNo1075_thumbnail.png",
+						"./assets/leavesTextureNo1077_thumbnail.png",
+						"./assets/leavesTextureNo1084_thumbnail.png",
+						"./assets/leavesTextureNo1088_thumbnail.png",
+						"./assets/leavesTextureNo1091_thumbnail.png",
+						"./assets/leavesTextureNo1094_thumbnail.png",
+						"./assets/leavesTextureNo1106_thumbnail.png",
+						"./assets/leavesTextureNo1110_thumbnail.png",
+						"./assets/leavesTextureNo1112_thumbnail.png",
+						"./assets/leavesTextureNo1116_thumbnail.png",
+						"./assets/leavesTextureNo1119_thumbnail.png",
+						"./assets/leavesTextureNo1120_thumbnail.png",
+						"./assets/leavesTextureNo1126_thumbnail.png",
+						"./assets/leavesTextureNo1132_thumbnail.png",
+						"./assets/leavesTextureNo1134_thumbnail.png",
+					];
+
+					var flowerImgFiles = [
+						"./assets/Anemone-Flaccida-icon.gif",
+						"./assets/Cornus-Florida-icon.gif",
+						"./assets/Dicentra-Spectabilis-icon.gif",
+						"./assets/F11-icon.gif",
+						"./assets/F14-icon.gif",
+						"./assets/F17-icon.gif",
+						"./assets/F19-icon.gif",
+						"./assets/F20-icon.gif",
+						"./assets/Garden-Pansy-Blue-icon.gif",
+						"./assets/Garden-Pansy-White-icon.gif",
+					]
+
+					var branchImgFiles = [
+						"./assets/treesTextureNo1723_thumbnail.jpg",
+						"./assets/treesTextureNo1724_thumbnail.jpg",
+						"./assets/treesTextureNo1727_thumbnail.jpg",
+						"./assets/treesTextureNo1729_thumbnail.jpg",
+						"./assets/treesTextureNo1730_thumbnail.jpg",
+						"./assets/treesTextureNo1731_thumbnail.jpg",
+						"./assets/treesTextureNo1733_thumbnail.jpg",
+						"./assets/treesTextureNo1734_thumbnail.jpg",
+					]
+
+					var imagePromise = [];
+					var bitmapPromise = [];
+					function loadImages(imgfiles) {
+						for (let i = 0; i < imgfiles.length; i++) {
+							imagePromise.push(loadImage(imgfiles[i]));
+						}
+					}
+					function loadBitmaps(imgfiles, bitmaps) {
+						for (let i = 0; i < imgfiles.length; i++) {
+							var image = new Image();
+							image.src = imgfiles[i];
+							console.log(image.src);
+							bitmapPromise.push(createImageBitmap(image).then(function (image) { bitmaps.push(image); }));
+						}
+					}
+
+					var leafTextures = [];
+					var flowerTextures = [];
+					var branchTextures = [];
+					var treeConfig = new LSystemTree2DConfig();
+					var tree = new LSystemTree2D(treeConfig);
+					tree.Generate();
+
+					function init() {
+
+						var $the_canvas = $('#the_canvas2d');
+						$('#button_save').button().click(function () {
+							let dataURL = $the_canvas[0].toDataURL();
+							console.log(dataURL)
+							$(this).attr('href', dataURL);
+						});
+
+						$('#button_render').click(async function () {
+							let canvas2d = $the_canvas[0];
+							let tree = RandomGenerate(canvas2d, branchTextures, leafTextures, flowerTextures);
+							tree.GetSize();
+							let canvasContext2d = canvas2d.getContext("2d");
+							canvasContext2d.clearRect(0, 0, canvas2d.width, canvas2d.height);
+							tree.SetPosition(canvas2d.width / 2, canvas2d.height - 100);
+    						tree.Draw();
+						}).button();
+
+						$('#button_forest').click(async function () {
+							let canvas2d = $the_canvas[0];
+							let canvasContext2d = canvas2d.getContext("2d");
+							canvasContext2d.clearRect(0, 0, canvas2d.width, canvas2d.height);
+							RandomForest(canvas2d, branchTextures, leafTextures, flowerTextures);
+						}).button();
+					}
+
+					loadImages(leafImgFiles);
+					loadImages(flowerImgFiles);
+					loadImages(branchImgFiles);
+					Promise.all(imagePromise).then(function () {
+						loadBitmaps(leafImgFiles, leafTextures);
+						loadBitmaps(flowerImgFiles, flowerTextures);
+						loadBitmaps(branchImgFiles, branchTextures);
+						Promise.all(bitmapPromise).then(function () { init(); });
+					});
+				});
+			</script>
+			<div style="clear:both;"></div>
+		</section>
+	</div>
+	<div style="position: static !important;"></div>
+</body>
+
+</html>

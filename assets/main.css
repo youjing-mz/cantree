@@ -1,0 +1,159 @@
+﻿.controls {
+	width: 200px;
+	margin-left: auto;
+}
+.slider {
+	display: inline;
+}
+.ui-widget {
+	/*font-size: 1em;*/
+}
+.form_add_texture {
+	display: none;
+}
+.primaryText {
+	color: #eee;
+}
+.secondaryText {
+	color: #aaa;
+}
+.faqAnswer {
+	margin-left: 2em;
+	color: #aaa;
+}
+.exampleImagePreview {
+	background-color: #999;
+}
+#canvas_container {
+	z-index: 1;
+	position: absolute;
+	margin: auto;
+	width: 50%;
+	text-align: center;
+}
+#tree_assets_images {
+	display: none;
+}
+#parametersContainer {
+	width: 150px;
+	/*float: left;*/
+	margin-right: 1em;
+	background-color: rgba(0,0,0,.5);
+	color: #ddd;
+	padding: 10px;
+	position: absolute;
+	left: 0;
+}
+#button_render {
+	cursor: pointer;
+	font-size: 1.5em;
+	color: black;
+	margin: 2px;
+	width: 100%;
+}
+#button_save {
+	cursor: pointer;
+	color: black;
+	margin: 2px;
+	width: 100%;
+}
+#assets {
+	/*float: right;*/
+	text-align: right;
+	width: 25%;
+	position: absolute;
+	right: 0;
+	z-index: 10;
+}
+#assets img.asset {
+	height: 30px;
+	opacity: .2;
+	padding: 1px;
+	border: thin rgba(0,0,0,0) solid;
+	background-color: none;
+	cursor: pointer;
+}
+#assets img.selected, #assets img.selected:hover {
+	opacity: 1;
+	background-color: rgba(0,0,0,.2);
+	border: rgba(0,0,0,.3) solid thin;
+}
+#assets img.asset:hover {
+	opacity: .5;
+}
+#message_wait {
+	position: fixed;
+	z-index: 2;
+	top: 40%;
+	text-align: center;
+	width: 99%;
+	font-size: 5em;
+	color: black;
+	display: none;
+	background-color: rgba(255,255,255,.75);
+	padding: 15px;
+	font-family: sans-serif;
+}
+#header {
+	background-color: #333;
+	-webkit-box-shadow: rgba(0,0,0,.4) 0px 3px 10px;
+	z-index:1;
+	text-align: center;
+	/*font-family: sans-serif;*/
+}
+#header h1 {
+	font-size: 5em;
+}
+#menuBar {
+	font-size: 1.5em;
+}
+#menuBar a {
+	color: #afa;
+}
+#footer {
+	text-align: center;
+	font-size: 1em;
+	/*position: absolute;*/
+}
+#the_canvas2d {
+	/*background-color: rgba(255,255,255,.4);*/
+}
+#incompatibleBrowser {
+	font-size: 3em;
+}
+#header h1, #header h2  {
+	margin: 0;
+}
+#pageContainer, #headerContainer {
+	margin: auto;
+	width: 800px;
+	text-align: center;
+}
+#getStartedButton {
+	border: 1px solid rgba(0,0,0,.4);
+	background-color: rgba(150,140,100,.5);
+	color: black;
+	cursor: pointer;
+	text-align: center;
+	padding: .3em;
+	font-size: 2em;
+	text-decoration: none;
+	width: 200px;
+	margin-bottom: 2em;
+	display: block;
+	margin: auto;
+	-webkit-border-radius: 5px;
+	/*-webkit-box-shadow: rgba(0,0,0,.5) 2px 2px 1px;*/
+}
+#getStartedButton:hover {
+	background-color: rgba(150,140,100,1);
+}
+#presentationContainer td {
+	padding: 15px;
+}
+#faqContainer , #getStartedContainer{
+	text-align: left;
+	font-size: 1.5em;
+	margin-top: 5em;
+
+}
